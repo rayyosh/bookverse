@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse — Избранное</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== ROOT & VARIABLES ==================== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #e50914;
+            --accent-hover: #b80710;
+            --accent-gold: #f59e0b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-color: #e50914;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ==================== NAVBAR ==================== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 5%;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1.6rem; font-weight: 800; color: var(--accent-color);
+        }
+
+        .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+
+        .nav-link {
+            font-weight: 600; font-size: 0.95rem; color: var(--text-secondary);
+            transition: var(--transition); position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active { color: var(--text-primary); }
+        .nav-link.active::after {
+            content: ''; position: absolute; bottom: -6px; left: 0;
+            width: 100%; height: 2px; background-color: var(--accent-color); border-radius: 2px;
+        }
+
+        .nav-actions { display: flex; align-items: center; gap: 1.2rem; }
+
+        .control-btn {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            color: var(--text-primary); padding: 8px 14px; border-radius: 20px;
+            cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;
+            transition: var(--transition);
+        }
+
+        .control-btn:hover { transform: translateY(-2px); border-color: var(--accent-color); }
+
+        .icon-btn {
+            position: relative; background: var(--bg-secondary);
+            border: 1px solid var(--border-color); color: var(--text-primary);
+            width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: var(--transition);
+        }
+
+        .icon-btn:hover { background: var(--accent-color); color: #fff; transform: scale(1.08); }
+
+        .badge {
+            position: absolute; top: -4px; right: -4px;
+            background: var(--accent-color); color: white;
+            font-size: 0.7rem; font-weight: 700; width: 20px; height: 20px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            border: 2px solid var(--bg-primary);
+        }
+
+        /* ==================== PAGE HEADER ==================== */
+        .page-header {
+            padding: 130px 5% 30px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .page-header h1 i { color: var(--accent-color); }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* ==================== CONTENT CONTAINER ==================== */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .book-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-color);
+        }
+
+        .book-cover-wrap {
+            position: relative;
+            overflow: hidden;
+            height: 280px;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .book-card:hover .book-cover {
+            transform: scale(1.08);
+        }
+
+        .book-info {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .book-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .book-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .book-price {
+            font-weight: 800;
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-action:hover, .btn-action.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 5% 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .github-version {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .footer-links h4 { margin-bottom: 1rem; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 8px; }
+        .footer-links a { color: var(--text-secondary); transition: var(--transition); }
+        .footer-links a:hover { color: var(--accent-color); }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--accent-color); color: white;
+            padding: 12px 24px; border-radius: 8px;
+            box-shadow: var(--shadow-lg); z-index: 3000;
+            transform: translateY(100px); opacity: 0; transition: var(--transition);
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-book-open-reader"></i> BookVerse
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-link" data-i18n="nav_home">Главная</a></li>
+            <li><a href="catalog.html" class="nav-link" data-i18n="nav_catalog">Каталог</a></li>
+            <li><a href="favorites.html" class="nav-link active" data-i18n="nav_favorites">Избранное</a></li>
+            <li><a href="cart.html" class="nav-link" data-i18n="nav_cart">Корзина</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <button class="control-btn" onclick="toggleLanguage()">
+                <i class="fa-solid fa-globe"></i> <span id="currentLang">RU</span>
+            </button>
+            <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <a href="favorites.html" class="icon-btn">
+                <i class="fa-solid fa-heart"></i>
+                <span class="badge" id="favBadge">0</span>
+            </a>
+            <a href="cart.html" class="icon-btn">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="badge" id="cartBadge">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <h1 data-i18n="header_title"><i class="fa-solid fa-heart"></i> Избранные Книги</h1>
+        <p data-i18n="header_desc">Все книги, которые вам понравились, в одном месте</p>
+    </section>
+
+    <!-- CONTENT -->
+    <div class="container">
+        <div class="books-grid" id="favoritesGrid"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3 style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fa-solid fa-book-open-reader"></i> BookVerse
+                </h3>
+                <p style="color: var(--text-secondary);" data-i18n="footer_text">Современный магазин электронных и бумажных книг с быстрой доставкой через Telegram.</p>
+                <div class="github-version">
+                    <i class="fa-brands fa-github"></i> <span>v2.4.0 (Build Senior-Prod)</span>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="nav_catalog">Навигация</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav_home">Главная</a></li>
+                    <li><a href="catalog.html" data-i18n="nav_catalog">Каталог</a></li>
+                    <li><a href="favorites.html" data-i18n="nav_favorites">Избранное</a></li>
+                    <li><a href="cart.html" data-i18n="nav_cart">Корзина</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Контакты & Бот</h4>
+                <ul>
+                    <li><i class="fa-solid fa-robot"></i> Telegram Bot: @BookVerseBot</li>
+                    <li><i class="fa-solid fa-shield-halved"></i> 100% Безопасный заказ</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 BookVerse Inc. All rights reserved. Powered by Senior Dev Code.
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">Действие выполнено!</div>
+
+    <!-- JS LOGIC -->
+    <script>
+        const booksData = [
+            { id: 1, title: "1984", author: "Джордж Оруэлл", price: 65000, cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop" },
+            { id: 2, title: "Атомные Привычки", author: "Джеймс Клир", price: 85000, cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop" },
+            { id: 3, title: "Богатый Папа, Бедный Папа", author: "Роберт Кийосаки", price: 75000, cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop" },
+            { id: 4, title: "Мастер и Маргарита", author: "Михаил Булгаков", price: 70000, cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600&auto=format&fit=crop" },
+            { id: 5, title: "Шерлок Холмс", author: "Артур Конан Дойл", price: 90000, cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=600&auto=format&fit=crop" },
+            { id: 6, title: "Гарри Поттер", author: "Дж. К. Роулинг", price: 110000, cover: "https://images.unsplash.com/photo-1626618012641-bfbca5a31239?q=80&w=600&auto=format&fit=crop" }
+        ];
+
+        const i18n = {
+            RU: {
+                nav_home: "Главная", nav_catalog: "Каталог", nav_favorites: "Избранное", nav_cart: "Корзина",
+                header_title: "Избранные Книги", header_desc: "Все книги, которые вам понравились, в одном месте",
+                empty_fav: "В вашем избранном пока нет книг", footer_text: "Современный магазин электронных и бумажных книг."
+            },
+            UZ: {
+                nav_home: "Bosh sahifa", nav_catalog: "Katalog", nav_favorites: "Saralanganlar", nav_cart: "Savat",
+                header_title: "Saralangan Kitoblar", header_desc: "Sizga yoqqan barcha kitoblar bir joyda",
+                empty_fav: "Saralanganlar ro'yxati bo'sh", footer_text: "Zamonaviy elektron va qog'oz kitoblar do'koni."
+            },
+            EN: {
+                nav_home: "Home", nav_catalog: "Catalog", nav_favorites: "Favorites", nav_cart: "Cart",
+                header_title: "Favorite Books", header_desc: "All the books you liked in one place",
+                empty_fav: "Your favorites list is empty", footer_text: "Modern online bookstore with fast delivery."
+            }
+        };
+
+        let currentLang = localStorage.getItem('app_lang') || 'RU';
+        let cart = JSON.parse(localStorage.getItem('app_cart')) || [];
+        let favorites = JSON.parse(localStorage.getItem('app_favs')) || [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyLanguage();
+            renderFavorites();
+            updateBadges();
+        });
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeBtn = document.getElementById('themeBtn');
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            }
+        }
+
+        function toggleLanguage() {
+            const langs = ['RU', 'UZ', 'EN'];
+            let nextIndex = (langs.indexOf(currentLang) + 1) % langs.length;
+            currentLang = langs[nextIndex];
+            localStorage.setItem('app_lang', currentLang);
+            applyLanguage();
+            renderFavorites();
+        }
+
+        function applyLanguage() {
+            document.getElementById('currentLang').innerText = currentLang;
+            const dict = i18n[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerText = dict[key];
+            });
+        }
+
+        function renderFavorites() {
+            const grid = document.getElementById('favoritesGrid');
+            const dict = i18n[currentLang];
+
+            const favBooks = booksData.filter(b => favorites.includes(b.id));
+
+            if (favBooks.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-regular fa-heart"></i>
+                        <h3>${dict.empty_fav}</h3>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = favBooks.map(book => `
+                <div class="book-card">
+                    <div class="book-cover-wrap" style="height: 280px; position:relative;">
+                        <a href="book-detail.html?id=${book.id}">
+                            <img src="${book.cover}" class="book-cover" alt="${book.title}" style="width:100%; height:100%; object-fit:cover;">
+                        </a>
+                    </div>
+                    <div class="book-info">
+                        <div>
+                            <a href="book-detail.html?id=${book.id}">
+                                <div class="book-title">${book.title}</div>
+                            </a>
+                            <div class="book-author">${book.author}</div>
+                        </div>
+                        <div class="book-bottom">
+                            <span class="book-price">${book.price.toLocaleString()} UZS</span>
+                            <div class="card-actions">
+                                <button class="btn-action active" onclick="removeFromFavorites(${book.id})">
+                                    <i class="fa-solid fa-heart"></i>
+                                </button>
+                                <button class="btn-action" onclick="addToCart(${book.id})">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeFromFavorites(id) {
+            favorites = favorites.filter(item => item !== id);
+            localStorage.setItem('app_favs', JSON.stringify(favorites));
+            updateBadges();
+            renderFavorites();
+            showToast("Удалено из избранного");
+        }
+
+        function addToCart(id) {
+            cart.push(id);
+            localStorage.setItem('app_cart', JSON.stringify(cart));
+            updateBadges();
+            showToast("Добавлено в корзину 🛒");
+        }
+
+        function updateBadges() {
+            document.getElementById('favBadge').innerText = favorites.length;
+            document.getElementById('cartBadge').innerText = cart.length;
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            toast.innerText = text;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>

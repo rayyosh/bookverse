@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse — Книжный Интернет-Магазин</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== ROOT & VARIABLES ==================== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #e50914; /* Netflix Red */
+            --accent-hover: #b80710;
+            --accent-gold: #f59e0b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-color: #e50914;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ==================== HEADER & NAVBAR ==================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .control-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+        }
+
+        .icon-btn {
+            position: relative;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+            transform: scale(1.08);
+        }
+
+        .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--accent-color);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-primary);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            position: relative;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 5% 60px;
+            background: linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.7) 100%), 
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 650px;
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: rgba(229, 9, 20, 0.2);
+            color: var(--accent-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(229, 9, 20, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .search-bar {
+            display: flex;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 6px 8px 6px 20px;
+            box-shadow: var(--shadow-lg);
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 26px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .search-bar button:hover {
+            background: var(--accent-hover);
+        }
+
+        /* ==================== NETFLIX STYLE SLIDER ==================== */
+        .section-title {
+            padding: 0 5%;
+            margin: 2rem 0 1rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--accent-color);
+        }
+
+        .netflix-slider {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding: 1rem 5% 2rem;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+
+        .netflix-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .book-card {
+            flex: 0 0 220px;
+            scroll-snap-align: start;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            transform: scale(1.05) translateY(-5px);
+            z-index: 10;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-color);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 1rem;
+        }
+
+        .book-title {
+            font-size: 1rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .book-author {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .book-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .book-price {
+            font-weight: 800;
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-action:hover, .btn-action.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* ==================== FOOTER & GITHUB / TG ==================== */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 5% 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand h3 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .github-version {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .footer-links h4 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ==================== MODAL CART & NOTIFICATION ==================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 550px;
+            padding: 2rem;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent-color);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-book-open-reader"></i> BookVerse
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-link active" data-i18n="nav_home">Главная</a></li>
+            <li><a href="catalog.html" class="nav-link" data-i18n="nav_catalog">Каталог</a></li>
+            <li><a href="favorites.html" class="nav-link" data-i18n="nav_favorites">Избранное</a></li>
+            <li><a href="cart.html" class="nav-link" data-i18n="nav_cart">Корзина</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <!-- Language Selector -->
+            <button class="control-btn" id="langBtn" onclick="toggleLanguage()">
+                <i class="fa-solid fa-globe"></i> <span id="currentLang">RU</span>
+            </button>
+
+            <!-- Dark / Light Mode -->
+            <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <!-- Favorites Icon -->
+            <a href="favorites.html" class="icon-btn">
+                <i class="fa-solid fa-heart"></i>
+                <span class="badge" id="favBadge">0</span>
+            </a>
+
+            <!-- Cart Icon -->
+            <button class="icon-btn" onclick="openCartModal()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="badge" id="cartBadge">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag" data-i18n="hero_tag">🔥 Бестселлер 2026</span>
+            <h1 class="hero-title" data-i18n="hero_title">Вселенная Лучших Книг В Ваших Руках</h1>
+            <p class="hero-description" data-i18n="hero_desc">Откройте для себя тысячи шедевров мировой литературы. Мгновенная доставка и удобное чтение.</p>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск книг, авторов, жанров..." onkeyup="handleSearch(event)">
+                <button onclick="executeSearch()"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="search_btn">Найти</span></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- NETFLIX STYLE SLIDER 1: TRENDING -->
+    <h2 class="section-title"><i class="fa-solid fa-fire"></i> <span data-i18n="slider_trending">В Тренде (Netflix Style)</span></h2>
+    <div class="netflix-slider" id="trendingSlider"></div>
+
+    <!-- NETFLIX STYLE SLIDER 2: POPULAR -->
+    <h2 class="section-title"><i class="fa-solid fa-star"></i> <span data-i18n="slider_popular">Популярные Новинки</span></h2>
+    <div class="netflix-slider" id="popularSlider"></div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3><i class="fa-solid fa-book-open-reader"></i> BookVerse</h3>
+                <p style="color: var(--text-secondary);" data-i18n="footer_text">Современный магазин электронных и бумажных книг с быстрой доставкой через Telegram.</p>
+                <div class="github-version">
+                    <i class="fa-brands fa-github"></i> <span>v2.4.0 (Build Senior-Prod)</span>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="nav_catalog">Навигация</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav_home">Главная</a></li>
+                    <li><a href="catalog.html" data-i18n="nav_catalog">Каталог</a></li>
+                    <li><a href="favorites.html" data-i18n="nav_favorites">Избранное</a></li>
+                    <li><a href="cart.html" data-i18n="nav_cart">Корзина</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="contact_us">Контакты & Бот</h4>
+                <ul>
+                    <li><i class="fa-solid fa-robot"></i> Telegram Bot: @BookVerseBot</li>
+                    <li><i class="fa-solid fa-shield-halved"></i> 100% Безопасный заказ</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 BookVerse Inc. All rights reserved. Powered by Senior Dev Code.
+        </div>
+    </footer>
+
+    <!-- CART & ORDER MODAL -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="cart_title"><i class="fa-solid fa-cart-shopping"></i> Ваша Корзина</h3>
+                <button class="close-btn" onclick="closeCartModal()">&times;</button>
+            </div>
+            <div id="cartItemsList"></div>
+            
+            <div style="margin-top: 1.5rem; text-align: right; font-weight: 800; font-size: 1.2rem;">
+                <span data-i18n="total">Итого:</span> <span id="cartTotal" style="color: var(--accent-gold);">0 UZS</span>
+            </div>
+
+            <form id="orderForm" onsubmit="submitOrder(event)" style="margin-top: 1.5rem;">
+                <h4 style="margin-bottom: 1rem;" data-i18n="checkout_title">Оформление Заказа</h4>
+                <div class="form-group">
+                    <label data-i18n="form_name">Ваше Имя</label>
+                    <input type="text" id="custName" required placeholder="Александр">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="form_phone">Номер Телефона</label>
+                    <input type="tel" id="custPhone" required placeholder="+998 90 123 45 67">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="form_address">Адрес Доставки</label>
+                    <input type="text" id="custAddress" required placeholder="г. Ташкент, ул. Навои, 12">
+                </div>
+                <button type="submit" class="btn-submit" data-i18n="submit_btn">Оформить и Отправить в Telegram</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">Действие выполнено!</div>
+
+    <!-- APPLICATION JAVASCRIPT -->
+    <script>
+        /* ==================== CONFIGURATION & STATE ==================== */
+        const TELEGRAM_BOT_TOKEN = "8666880607:AAFld2Kbm3PRZxNSkXQXTNe81RR9VKhMU6U";
+        const TELEGRAM_USER_ID = "93372553";
+
+        const booksData = [
+            { id: 1, title: "1984", author: "Джордж Оруэлл", price: 65000, cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop" },
+            { id: 2, title: "Атомные Привычки", author: "Джеймс Клир", price: 85000, cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop" },
+            { id: 3, title: "Богатый Папа, Бедный Папа", author: "Роберт Кийосаки", price: 75000, cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop" },
+            { id: 4, title: "Мастер и Маргарита", author: "Михаил Булгаков", price: 70000, cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600&auto=format&fit=crop" },
+            { id: 5, title: "Шерлок Холмс", author: "Артур Конан Дойл", price: 90000, cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=600&auto=format&fit=crop" },
+            { id: 6, title: "Гарри Поттер", author: "Дж. К. Роулинг", price: 110000, cover: "https://images.unsplash.com/photo-1626618012641-bfbca5a31239?q=80&w=600&auto=format&fit=crop" }
+        ];
+
+        const i18n = {
+            RU: {
+                nav_home: "Главная", nav_catalog: "Каталог", nav_favorites: "Избранное", nav_cart: "Корзина",
+                hero_tag: "🔥 Бестселлер 2026", hero_title: "Вселенная Лучших Книг В Ваших Руках",
+                hero_desc: "Откройте для себя тысячи шедевров мировой литературы. Мгновенная доставка.",
+                search_btn: "Найти", slider_trending: "В Тренде (Netflix Style)", slider_popular: "Популярные Новинки",
+                footer_text: "Современный магазин электронных и бумажных книг с быстрой доставкой.",
+                contact_us: "Контакты & Бот", cart_title: "Ваша Корзина", total: "Итого:",
+                checkout_title: "Оформление Заказа", form_name: "Ваше Имя", form_phone: "Номер Телефона",
+                form_address: "Адрес Доставки", submit_btn: "Оформить и Отправить в Telegram"
+            },
+            UZ: {
+                nav_home: "Bosh sahifa", nav_catalog: "Katalog", nav_favorites: "Saralanganlar", nav_cart: "Savat",
+                hero_tag: "🔥 Bestseller 2026", hero_title: "Eng Yaxshi Kitoblar Olam Sizning Qo'lingizda",
+                hero_desc: "Jahon adabiyotining minglab durdonalarini kashf eting. Tezkor yetkazib berish.",
+                search_btn: "Qidirish", slider_trending: "Ommabop (Netflix Stili)", slider_popular: "Yangi Mashhurlar",
+                footer_text: "Telegram orqali tez yetkazib beriladigan zamonaviy kitob do'koni.",
+                contact_us: "Aloqa & Bot", cart_title: "Sizning Savatingiz", total: "Jami:",
+                checkout_title: "Buyurtmani Rasmiylashtirish", form_name: "Ismingiz", form_phone: "Telefon Raqamingiz",
+                form_address: "Yetkazib berish manzili", submit_btn: "Telegramga Yuborish"
+            },
+            EN: {
+                nav_home: "Home", nav_catalog: "Catalog", nav_favorites: "Favorites", nav_cart: "Cart",
+                hero_tag: "🔥 Bestseller 2026", hero_title: "The Universe of Best Books in Your Hands",
+                hero_desc: "Discover thousands of masterpieces of world literature. Instant delivery.",
+                search_btn: "Search", slider_trending: "Trending Now (Netflix Style)", slider_popular: "Popular Arrivals",
+                footer_text: "Modern online bookstore with fast delivery notifications via Telegram.",
+                contact_us: "Contacts & Bot", cart_title: "Your Shopping Cart", total: "Total:",
+                checkout_title: "Checkout Order", form_name: "Your Name", form_phone: "Phone Number",
+                form_address: "Delivery Address", submit_btn: "Complete Order & Send to Telegram"
+            }
+        };
+
+        let currentLang = localStorage.getItem('app_lang') || 'RU';
+        let cart = JSON.parse(localStorage.getItem('app_cart')) || [];
+        let favorites = JSON.parse(localStorage.getItem('app_favs')) || [];
+
+        /* ==================== INITIALIZATION ==================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            applyLanguage();
+            renderSliders();
+            updateBadges();
+        });
+
+        /* ==================== THEME & I18N ==================== */
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeBtn = document.getElementById('themeBtn');
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            }
+        }
+
+        function toggleLanguage() {
+            const langs = ['RU', 'UZ', 'EN'];
+            let nextIndex = (langs.indexOf(currentLang) + 1) % langs.length;
+            currentLang = langs[nextIndex];
+            localStorage.setItem('app_lang', currentLang);
+            applyLanguage();
+        }
+
+        function applyLanguage() {
+            document.getElementById('currentLang').innerText = currentLang;
+            const dict = i18n[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerText = dict[key];
+            });
+        }
+
+        /* ==================== SLIDERS & RENDER ==================== */
+        function renderSliders() {
+            const trendingContainer = document.getElementById('trendingSlider');
+            const popularContainer = document.getElementById('popularSlider');
+
+            const createCardHTML = (book) => {
+                const isFav = favorites.includes(book.id);
+                return `
+                    <div class="book-card">
+                        <img src="${book.cover}" class="book-cover" alt="${book.title}">
+                        <div class="book-info">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">${book.author}</div>
+                            <div class="book-bottom">
+                                <span class="book-price">${book.price.toLocaleString()} UZS</span>
+                                <div class="card-actions">
+                                    <button class="btn-action ${isFav ? 'active' : ''}" onclick="toggleFavorite(${book.id})">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </button>
+                                    <button class="btn-action" onclick="addToCart(${book.id})">
+                                        <i class="fa-solid fa-cart-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            };
+
+            trendingContainer.innerHTML = booksData.map(createCardHTML).join('');
+            popularContainer.innerHTML = [...booksData].reverse().map(createCardHTML).join('');
+        }
+
+        /* ==================== CART & FAVORITES SYSTEM ==================== */
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(item => item !== id);
+                showToast("Удалено из избранного");
+            } else {
+                favorites.push(id);
+                showToast("Добавлено в избранное ❤️");
+            }
+            localStorage.setItem('app_favs', JSON.stringify(favorites));
+            updateBadges();
+            renderSliders();
+        }
+
+        function addToCart(id) {
+            cart.push(id);
+            localStorage.setItem('app_cart', JSON.stringify(cart));
+            updateBadges();
+            showToast("Добавлено в корзину 🛒");
+        }
+
+        function updateBadges() {
+            document.getElementById('favBadge').innerText = favorites.length;
+            document.getElementById('cartBadge').innerText = cart.length;
+        }
+
+        function openCartModal() {
+            const modal = document.getElementById('cartModal');
+            const list = document.getElementById('cartItemsList');
+            const totalEl = document.getElementById('cartTotal');
+
+            if (cart.length === 0) {
+                list.innerHTML = `<p style="text-align:center; color: var(--text-secondary);">Ваша корзина пуста</p>`;
+                totalEl.innerText = '0 UZS';
+            } else {
+                let total = 0;
+                list.innerHTML = cart.map((id, index) => {
+                    const book = booksData.find(b => b.id === id);
+                    if (!book) return '';
+                    total += book.price;
+                    return `
+                        <div class="cart-item">
+                            <img src="${book.cover}" alt="">
+                            <div>
+                                <h4>${book.title}</h4>
+                                <small>${book.price.toLocaleString()} UZS</small>
+                            </div>
+                            <button class="btn-action" onclick="removeFromCart(${index})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                }).join('');
+                totalEl.innerText = `${total.toLocaleString()} UZS`;
+            }
+            modal.classList.add('active');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.remove('active');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('app_cart', JSON.stringify(cart));
+            updateBadges();
+            openCartModal();
+        }
+
+        /* ==================== TELEGRAM BOT INTEGRATION ==================== */
+        async function submitOrder(e) {
+            e.preventDefault();
+            if (cart.length === 0) {
+                alert("Корзина пуста!");
+                return;
+            }
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+
+            let orderItemsText = "";
+            let totalPrice = 0;
+
+            cart.forEach((id, idx) => {
+                const book = booksData.find(b => b.id === id);
+                if (book) {
+                    orderItemsText += `${idx + 1}. *${book.title}* — ${book.price.toLocaleString()} UZS\n`;
+                    totalPrice += book.price;
+                }
+            });
+
+            const telegramMessage = `
+🛍 *НОВЫЙ ЗАКАЗ С ВЕБ-САЙТА (BookVerse)*
+
+👤 *Покупатель:* ${name}
+📞 *Телефон:* ${phone}
+📍 *Адрес:* ${address}
+
+📚 *Заказанные книги:*
+${orderItemsText}
+💰 *Итоговая сумма:* *${totalPrice.toLocaleString()} UZS*
+            `;
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_USER_ID,
+                        text: telegramMessage,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                if (response.ok) {
+                    showToast("🚀 Заказ успешно отправлен в Telegram!");
+                    cart = [];
+                    localStorage.setItem('app_cart', JSON.stringify(cart));
+                    updateBadges();
+                    closeCartModal();
+                } else {
+                    alert("Ошибка при отправке заказа в Telegram. Проверьте Bot Token.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Ошибка соединения с Telegram API.");
+            }
+        }
+
+        /* ==================== SEARCH & TOAST ==================== */
+        function executeSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = `catalog.html?search=${encodeURIComponent(query)}`;
+            }
+        }
+
+        function handleSearch(e) {
+            if (e.key === 'Enter') executeSearch();
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            toast.innerText = text;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
