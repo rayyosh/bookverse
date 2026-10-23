@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <style>
         /* ==================== ROOT & VARIABLES ==================== */
         :root {
@@ -56,66 +58,129 @@
             min-height: 100vh;
         }
 
-        a { text-decoration: none; color: inherit; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
         /* ==================== NAVBAR ==================== */
         .navbar {
             position: fixed;
-            top: 0; left: 0; width: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border);
             padding: 1rem 5%;
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             transition: var(--transition);
         }
 
         .logo {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 1.6rem; font-weight: 800; color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-color);
         }
 
-        .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
 
         .nav-link {
-            font-weight: 600; font-size: 0.95rem; color: var(--text-secondary);
-            transition: var(--transition); position: relative;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            position: relative;
         }
 
-        .nav-link:hover, .nav-link.active { color: var(--text-primary); }
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text-primary);
+        }
+
         .nav-link.active::after {
-            content: ''; position: absolute; bottom: -6px; left: 0;
-            width: 100%; height: 2px; background-color: var(--accent-color); border-radius: 2px;
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
         }
 
-        .nav-actions { display: flex; align-items: center; gap: 1.2rem; }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
 
         .control-btn {
-            background: var(--bg-secondary); border: 1px solid var(--border-color);
-            color: var(--text-primary); padding: 8px 14px; border-radius: 20px;
-            cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             transition: var(--transition);
         }
 
-        .control-btn:hover { transform: translateY(-2px); border-color: var(--accent-color); }
-
-        .icon-btn {
-            position: relative; background: var(--bg-secondary);
-            border: 1px solid var(--border-color); color: var(--text-primary);
-            width: 42px; height: 42px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: var(--transition);
+        .control-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
         }
 
-        .icon-btn:hover { background: var(--accent-color); color: #fff; transform: scale(1.08); }
+        .icon-btn {
+            position: relative;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+            transform: scale(1.08);
+        }
 
         .badge {
-            position: absolute; top: -4px; right: -4px;
-            background: var(--accent-color); color: white;
-            font-size: 0.7rem; font-weight: 700; width: 20px; height: 20px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--accent-color);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: 2px solid var(--bg-primary);
         }
 
@@ -156,7 +221,7 @@
             position: relative;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             height: 500px;
         }
 
@@ -252,7 +317,8 @@
             transition: var(--transition);
         }
 
-        .btn-secondary:hover, .btn-secondary.active {
+        .btn-secondary:hover,
+        .btn-secondary.active {
             background: var(--accent-color);
             color: white;
             border-color: var(--accent-color);
@@ -286,11 +352,26 @@
             border: 1px solid var(--border-color);
         }
 
-        .footer-links h4 { margin-bottom: 1rem; }
-        .footer-links ul { list-style: none; }
-        .footer-links li { margin-bottom: 8px; }
-        .footer-links a { color: var(--text-secondary); transition: var(--transition); }
-        .footer-links a:hover { color: var(--accent-color); }
+        .footer-links h4 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
 
         .copyright {
             text-align: center;
@@ -301,20 +382,37 @@
         }
 
         .toast {
-            position: fixed; bottom: 20px; right: 20px;
-            background: var(--accent-color); color: white;
-            padding: 12px 24px; border-radius: 8px;
-            box-shadow: var(--shadow-lg); z-index: 3000;
-            transform: translateY(100px); opacity: 0; transition: var(--transition);
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
         }
-        .toast.show { transform: translateY(0); opacity: 1; }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
 
         @media (max-width: 768px) {
-            .book-detail-grid { grid-template-columns: 1fr; }
-            .book-detail-image-wrap { height: 380px; }
+            .book-detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .book-detail-image-wrap {
+                height: 380px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- NAVBAR -->
@@ -350,8 +448,9 @@
 
     <!-- DETAIL CONTAINER -->
     <div class="detail-container">
-        <a href="catalog.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_catalog">Назад в каталог</span></a>
-        
+        <a href="catalog.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> <span
+                data-i18n="back_catalog">Назад в каталог</span></a>
+
         <div class="book-detail-grid" id="bookDetailContent">
             <!-- Dynamic Data Rendered via JS -->
         </div>
@@ -364,7 +463,8 @@
                 <h3 style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem;">
                     <i class="fa-solid fa-book-open-reader"></i> BookVerse
                 </h3>
-                <p style="color: var(--text-secondary);" data-i18n="footer_text">Современный магазин электронных и бумажных книг с быстрой доставкой через Telegram.</p>
+                <p style="color: var(--text-secondary);" data-i18n="footer_text">Современный магазин электронных и
+                    бумажных книг с быстрой доставкой через Telegram.</p>
                 <div class="github-version">
                     <i class="fa-brands fa-github"></i> <span>v2.4.0 (Build Senior-Prod)</span>
                 </div>
@@ -381,7 +481,9 @@
             <div class="footer-links">
                 <h4>Контакты & Бот</h4>
                 <ul>
-                    <li><i class="fa-solid fa-robot"></i> Telegram Bot: @BookVerseBot</li>
+                    <li><i class="fa-solid fa-robot"></i> Telegram Bot: <a href="https://t.me/readbook0905_bot"
+                            target="_blank"
+                            style="color: var(--primary); text-decoration: underline;">@readbook0905_bot</a></li>
                     <li><i class="fa-solid fa-shield-halved"></i> 100% Безопасный заказ</li>
                 </ul>
             </div>
@@ -395,7 +497,7 @@
 
     <!-- JS LOGIC -->
     <script>
-        const TELEGRAM_BOT_TOKEN = "8666880607:AAFld2Kbm3PRZxNSkXQXTNe81RR9VKhMU6U";
+        const TELEGRAM_BOT_TOKEN = "8666880607:8978326949:AAHaAgppJVKLWmrUCQpElWiq1I42bSJi818";
         const TELEGRAM_USER_ID = "93372553";
 
         const booksData = [
@@ -525,6 +627,16 @@
             showToast("Добавлено в корзину 🛒");
         }
 
+        function escapeHtml(text) {
+            if (!text) return "";
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         async function quickBuy(id) {
             const book = booksData.find(b => b.id === id);
             if (!book) return;
@@ -533,18 +645,25 @@
             const phone = prompt("Введите номер телефона:", "+998 90 123 45 67");
             if (!name || !phone) return;
 
-            const message = `🚀 *БЫСТРЫЙ ЗАКАЗ (1 КЛИК)*\n\n📚 *Книга:* ${book.title}\n💰 *Цена:* ${book.price.toLocaleString()} UZS\n👤 *Имя:* ${name}\n📞 *Телефон:* ${phone}`;
+            const message = `🚀 <b>БЫСТРЫЙ ЗАКАЗ (1 КЛИК)</b>\n\n📚 <b>Книга:</b> ${escapeHtml(book.title)}\n💰 <b>Цена:</b> ${book.price.toLocaleString()} UZS\n👤 <b>Имя:</b> ${escapeHtml(name)}\n📞 <b>Телефон:</b> ${escapeHtml(phone)}`;
 
             try {
                 const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_USER_ID, text: message, parse_mode: 'Markdown' })
+                    body: JSON.stringify({ chat_id: TELEGRAM_USER_ID, text: message, parse_mode: 'HTML' })
                 });
-                if (res.ok) {
+                const result = await res.json();
+                if (res.ok && result.ok) {
                     showToast("🚀 Заказ успешно отправлен администратору в Telegram!");
                 } else {
-                    alert("Ошибка отправки в Telegram.");
+                    console.error("Telegram API Error:", result);
+                    const desc = result.description || "Неизвестная ошибка";
+                    if (desc.includes("chat not found")) {
+                        alert("Xatolik: Telegram chat topilmadi (chat not found)!\n\n1. Telegram orqali @readbook0905_bot botiga kiring va /start tugmasini bosing.\n2. Yoki koddagi TELEGRAM_USER_ID noto'g'ri bo'lishi mumkin.");
+                    } else {
+                        alert("Ошибка Telegram: " + desc);
+                    }
                 }
             } catch (err) {
                 console.error(err);
@@ -565,4 +684,5 @@
         }
     </script>
 </body>
+
 </html>
