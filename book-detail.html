@@ -481,9 +481,9 @@
             <div class="footer-links">
                 <h4>Контакты & Бот</h4>
                 <ul>
-                    <li><i class="fa-solid fa-robot"></i> Telegram Bot: <a href="https://t.me/readbook0905_bot"
+                    <li><i class="fa-solid fa-robot"></i> Telegram Bot: <a href="https://t.me/Rayyona09_bot"
                             target="_blank"
-                            style="color: var(--primary); text-decoration: underline;">@readbook0905_bot</a></li>
+                            style="color: var(--primary); text-decoration: underline;">@Rayyona09_bot</a></li>
                     <li><i class="fa-solid fa-shield-halved"></i> 100% Безопасный заказ</li>
                 </ul>
             </div>
@@ -497,8 +497,8 @@
 
     <!-- JS LOGIC -->
     <script>
-        const TELEGRAM_BOT_TOKEN = "8666880607:8978326949:AAHaAgppJVKLWmrUCQpElWiq1I42bSJi818";
-        const TELEGRAM_USER_ID = "93372553";
+        const TELEGRAM_BOT_TOKEN = "8978326949:AAHaAgppJVKLWmrUCQpElWiq1I42bSJi818";
+        const TELEGRAM_USER_ID = "8306645595";
 
         const booksData = [
             { id: 1, title: "1984", author: "Джордж Оруэлл", genre: "Художественная", pages: 320, year: 1949, price: 65000, description: "Культовый антиутопический роман Джорджа Оруэлла, описывающий мрачное тоталитарное общество будущего, где каждый шаг контролируется Партией.", cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop" },
@@ -660,7 +660,7 @@
                     console.error("Telegram API Error:", result);
                     const desc = result.description || "Неизвестная ошибка";
                     if (desc.includes("chat not found")) {
-                        alert("Xatolik: Telegram chat topilmadi (chat not found)!\n\n1. Telegram orqali @readbook0905_bot botiga kiring va /start tugmasini bosing.\n2. Yoki koddagi TELEGRAM_USER_ID noto'g'ri bo'lishi mumkin.");
+                        alert("Xatolik: Telegram chat topilmadi (chat not found)!\n\n1. Telegram orqali @Rayyona09_bot botiga kiring va /start tugmasini bosing.\n2. Yoki koddagi TELEGRAM_USER_ID noto'g'ri bo'lishi mumkin.");
                     } else {
                         alert("Ошибка Telegram: " + desc);
                     }
